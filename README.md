@@ -1,5 +1,7 @@
 # Calculatrice .NET MAUI
 
+**Auteur : TCHAMBA TCHAKOUNTE Edwin**
+
 Application de calculatrice mobile développée avec **.NET MAUI** (Single Project) dans le cadre de l'Activité n° 4 – Atelier de développement mobile.
 
 ## Fonctionnalités
@@ -46,6 +48,11 @@ CalculatriceMaui.sln
 │   └── Platforms/                    Android, iOS, MacCatalyst, Windows
 └── tests/EngineTests/                40 tests du moteur de calcul (console)
 ```
+
+## APK Android
+
+- **Automatique** : à chaque `git push`, GitHub Actions génère l'APK → onglet *Releases* du dépôt → `Calculatrice.apk`.
+- **Sous Ubuntu** : `./build-apk.sh` (installe .NET 9, Java 17, la charge MAUI Android et le SDK Android, puis produit `Calculatrice.apk`).
 
 ## Lancer le projet
 

@@ -1,0 +1,52 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: '17'
+
+      - name: Installer la charge de travail MAUI Android
+        run: dotnet workload install maui-android
+
+      - name: Tests du moteur de calcul
+        run: dotnet run --project tests/EngineTests
+
+      - name: Générer l'APK
+        run: >
+          dotnet publish CalculatriceMaui/CalculatriceMaui.csproj
+          -f net9.0-android -c Release
+          -p:AndroidSdkDirectory=$ANDROID_HOME
+          -o out
+
+      - name: Renommer l'APK
+        run: cp out/*-Signed.apk Calculatrice.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Calculatrice-apk
+          path: Calculatrice.apk
+
+      - name: Publier l'APK dans les Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Calculatrice v1.0.${{ github.run_number }}
+          files: Calculatrice.apk
