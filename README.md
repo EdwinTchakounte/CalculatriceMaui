@@ -1,6 +1,6 @@
 # Calculatrice .NET MAUI
 
-**Auteur : TCHAMBA TCHAKOUNTE Edwin**
+**Auteur : TCHAMBA TCHAKOUNTE Edwin** · [Dépôt](https://github.com/EdwinTchakounte/CalculatriceMaui) · [Télécharger l’APK](https://github.com/EdwinTchakounte/CalculatriceMaui/releases/latest)
 
 Application de calculatrice mobile développée avec **.NET MAUI** (Single Project) dans le cadre de l'Activité n° 4 – Atelier de développement mobile.
 
