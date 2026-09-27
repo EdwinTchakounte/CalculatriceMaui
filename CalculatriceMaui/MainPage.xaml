@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Layouts utilisés sur cette page (6) :
+      1. Grid                  : structure racine (portrait / paysage) + pavé de touches 4×5
+      2. HorizontalStackLayout : regroupe l'intitulé « Scientifique » et son interrupteur
+      3. Border                : carte arrondie de l'écran d'affichage
+      4. VerticalStackLayout   : empile l'opération en cours au-dessus du résultat
+      5. ScrollView            : défilement horizontal des opérations trop longues
+      6. FlexLayout            : fonctions avancées qui passent à la ligne selon la largeur
+-->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalculatriceMaui.MainPage"
+             Title="Calculatrice">
+
+    <!-- 1. GRID RACINE : lignes/colonnes redéfinies dans le code-behind selon l'orientation -->
+    <Grid x:Name="RootGrid"
+          Padding="16,12,16,16"
+          RowSpacing="12"
+          ColumnSpacing="16">
+
+        <!-- Barre supérieure : titre + interrupteur du mode scientifique -->
+        <Grid x:Name="TopBar" ColumnDefinitions="*,Auto">
+            <Label Text="Calculatrice"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   VerticalOptions="Center" />
+
+            <!-- 2. HORIZONTALSTACKLAYOUT -->
+            <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                <Label Text="Scientifique"
+                       FontSize="14"
+                       TextColor="{StaticResource TextSecondary}"
+                       VerticalOptions="Center" />
+                <Switch x:Name="SciSwitch"
+                        OnColor="{StaticResource Accent}"
+                        ThumbColor="{StaticResource TextPrimary}"
+                        VerticalOptions="Center"
+                        Toggled="OnSciToggled"
+                        SemanticProperties.Description="Afficher les fonctions scientifiques" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- 3. BORDER : carte de l'écran d'affichage -->
+        <Border x:Name="DisplayCard"
+                BackgroundColor="{StaticResource CardBackground}"
+                Stroke="{StaticResource CardStroke}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 22"
+                Padding="18,12">
+
+            <!-- 4. VERTICALSTACKLAYOUT : opération au-dessus du résultat -->
+            <VerticalStackLayout VerticalOptions="End" Spacing="4">
+
+                <!-- 5. SCROLLVIEW : l'opération en cours défile si elle est trop longue -->
+                <ScrollView x:Name="ExpressionScroll"
+                            Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never"
+                            HorizontalOptions="End">
+                    <Label x:Name="ExpressionLabel"
+                           Text=" "
+                           FontSize="20"
+                           TextColor="{StaticResource TextSecondary}"
+                           LineBreakMode="NoWrap"
+                           HorizontalTextAlignment="End" />
+                </ScrollView>
+
+                <Label x:Name="ResultLabel"
+                       Text="0"
+                       FontSize="56"
+                       TextColor="{StaticResource TextPrimary}"
+                       LineBreakMode="HeadTruncation"
+                       MaxLines="1"
+                       HorizontalTextAlignment="End"
+                       SemanticProperties.HeadingLevel="Level1" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- 6. FLEXLAYOUT : fonctions avancées, retour à la ligne automatique -->
+        <FlexLayout x:Name="SciPanel"
+                    IsVisible="False"
+                    Wrap="Wrap"
+                    Direction="Row"
+                    JustifyContent="SpaceBetween"
+                    AlignItems="Center">
+            <Button Text="√x"  Style="{StaticResource SciKeyStyle}" FlexLayout.Grow="1" FlexLayout.Basis="18%" Clicked="OnSqrtClicked"
+                    SemanticProperties.Description="Racine carrée" />
+            <Button Text="x²"  Style="{StaticResource SciKeyStyle}" FlexLayout.Grow="1" FlexLayout.Basis="18%" Clicked="OnSquareClicked"
+                    SemanticProperties.Description="Carré" />
+            <Button Text="xʸ"  Style="{StaticResource SciKeyStyle}" FlexLayout.Grow="1" FlexLayout.Basis="18%" Clicked="OnOperatorClicked"
+                    CommandParameter="^" x:Name="PowerButton"
+                    SemanticProperties.Description="Puissance" />
+            <Button Text="1/x" Style="{StaticResource SciKeyStyle}" FlexLayout.Grow="1" FlexLayout.Basis="18%" Clicked="OnReciprocalClicked"
+                    SemanticProperties.Description="Inverse" />
+            <Button Text="π"   Style="{StaticResource SciKeyStyle}" FlexLayout.Grow="1" FlexLayout.Basis="18%" Clicked="OnPiClicked"
+                    SemanticProperties.Description="Pi" />
+        </FlexLayout>
+
+        <!-- 1 bis. GRID : pavé de touches 4 colonnes × 5 lignes, proportionnel à l'espace disponible -->
+        <Grid x:Name="Keypad"
+              RowDefinitions="*,*,*,*,*"
+              ColumnDefinitions="*,*,*,*"
+              RowSpacing="10"
+              ColumnSpacing="10"
+              SizeChanged="OnKeypadSizeChanged">
+
+            <!-- Ligne 0 -->
+            <Button Grid.Row="0" Grid.Column="0" Text="C"  Style="{StaticResource FunctionKeyStyle}" Clicked="OnClearClicked"
+                    SemanticProperties.Description="Remise à zéro" />
+            <Button Grid.Row="0" Grid.Column="1" Text="⌫"  Style="{StaticResource FunctionKeyStyle}" Clicked="OnBackspaceClicked"
+                    SemanticProperties.Description="Effacer le dernier caractère" />
+            <Button Grid.Row="0" Grid.Column="2" Text="%"  Style="{StaticResource FunctionKeyStyle}" Clicked="OnPercentClicked"
+                    SemanticProperties.Description="Pourcentage" />
+            <Button Grid.Row="0" Grid.Column="3" Text="÷"  Style="{StaticResource OperatorKeyStyle}" Clicked="OnOperatorClicked"
+                    CommandParameter="÷" x:Name="DivideButton" SemanticProperties.Description="Diviser" />
+
+            <!-- Ligne 1 -->
+            <Button Grid.Row="1" Grid.Column="0" Text="7" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="1" Grid.Column="1" Text="8" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="1" Grid.Column="2" Text="9" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="1" Grid.Column="3" Text="×" Style="{StaticResource OperatorKeyStyle}" Clicked="OnOperatorClicked"
+                    CommandParameter="×" x:Name="MultiplyButton" SemanticProperties.Description="Multiplier" />
+
+            <!-- Ligne 2 -->
+            <Button Grid.Row="2" Grid.Column="0" Text="4" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="2" Grid.Column="1" Text="5" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="2" Grid.Column="2" Text="6" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="2" Grid.Column="3" Text="−" Style="{StaticResource OperatorKeyStyle}" Clicked="OnOperatorClicked"
+                    CommandParameter="−" x:Name="MinusButton" SemanticProperties.Description="Soustraire" />
+
+            <!-- Ligne 3 -->
+            <Button Grid.Row="3" Grid.Column="0" Text="1" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="3" Grid.Column="1" Text="2" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="3" Grid.Column="2" Text="3" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="3" Grid.Column="3" Text="+" Style="{StaticResource OperatorKeyStyle}" Clicked="OnOperatorClicked"
+                    CommandParameter="+" x:Name="PlusButton" SemanticProperties.Description="Additionner" />
+
+            <!-- Ligne 4 -->
+            <Button Grid.Row="4" Grid.Column="0" Text="±" Style="{StaticResource FunctionKeyStyle}" Clicked="OnToggleSignClicked"
+                    SemanticProperties.Description="Changer le signe" />
+            <Button Grid.Row="4" Grid.Column="1" Text="0" Style="{StaticResource DigitKeyStyle}" Clicked="OnDigitClicked" />
+            <Button Grid.Row="4" Grid.Column="2" Text="," Style="{StaticResource DigitKeyStyle}" Clicked="OnDecimalClicked"
+                    SemanticProperties.Description="Virgule" />
+            <Button Grid.Row="4" Grid.Column="3" Text="=" Style="{StaticResource OperatorKeyStyle}" Clicked="OnEqualsClicked"
+                    SemanticProperties.Description="Égal" />
+        </Grid>
+    </Grid>
+</ContentPage>

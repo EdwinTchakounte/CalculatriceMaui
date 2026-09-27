@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Palette sombre -->
+    <Color x:Key="PageBackground">#121214</Color>
+    <Color x:Key="CardBackground">#1C1C21</Color>
+    <Color x:Key="CardStroke">#2A2A31</Color>
+
+    <Color x:Key="DigitKey">#2A2A30</Color>
+    <Color x:Key="FunctionKey">#3E3E46</Color>
+    <Color x:Key="SciKey">#232329</Color>
+    <Color x:Key="Accent">#FF9F0A</Color>
+    <Color x:Key="AccentText">#FFB340</Color>
+
+    <Color x:Key="TextPrimary">#F5F5F7</Color>
+    <Color x:Key="TextSecondary">#8E8E96</Color>
+    <Color x:Key="ErrorText">#FF6B6B</Color>
+
+</ResourceDictionary>

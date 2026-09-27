@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Tailles de police ajustées dynamiquement par MainPage selon l'écran -->
+    <x:Double x:Key="KeyFontSize">26</x:Double>
+    <x:Double x:Key="SciFontSize">17</x:Double>
+
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{StaticResource PageBackground}" />
+    </Style>
+
+    <!-- Style de base de toutes les touches -->
+    <Style x:Key="KeyBase" TargetType="Button">
+        <Setter Property="FontSize" Value="{DynamicResource KeyFontSize}" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource DigitKey}" />
+        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="MinimumHeightRequest" Value="0" />
+        <Setter Property="MinimumWidthRequest" Value="0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.88" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                            <Setter Property="Scale" Value="0.95" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.35" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DigitKeyStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}" />
+
+    <Style x:Key="FunctionKeyStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FunctionKey}" />
+    </Style>
+
+    <Style x:Key="OperatorKeyStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+        <Setter Property="BackgroundColor" Value="{StaticResource Accent}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="SciKeyStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+        <Setter Property="BackgroundColor" Value="{StaticResource SciKey}" />
+        <Setter Property="TextColor" Value="{StaticResource AccentText}" />
+        <Setter Property="FontSize" Value="{DynamicResource SciFontSize}" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="HeightRequest" Value="44" />
+        <Setter Property="Margin" Value="3" />
+    </Style>
+
+</ResourceDictionary>
